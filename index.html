@@ -80,7 +80,7 @@ body{overflow:hidden;background:var(--ground);color:var(--ink);font-family:var(-
 <canvas id="world" tabindex="0" aria-label="Rohit Kumar's portfolio as a 360 degree studio"></canvas>
 
 <header class="top">
-  <div class="brand"><div class="mono">RK</div><div class="who"><b>Rohit Kumar</b><span>Multidisciplinary designer · v5</span></div></div>
+  <div class="brand"><div class="mono">RK</div><div class="who"><b>Rohit Kumar</b><span>Multidisciplinary designer · v6</span></div></div>
   <div class="acts">
     <button class="btn" id="snd" aria-pressed="false" aria-label="Toggle sound"><span class="bars"><i></i><i></i><i></i></span><span id="sndT">Sound</span></button>
     <button class="btn primary" id="vr">Enter VR</button>
@@ -386,8 +386,6 @@ const vrNav=new THREE.Group();vrNav.visible=false;scene.add(vrNav);
 const vrNavBtns=SECTIONS.map((s,i)=>{const m=panel(.22,.075,(x,Wd,H)=>{x.fillStyle=s.col;x.fillRect(0,0,Wd,H);x.fillStyle='#0b0b0e';const fs=fit(x,s.t.toUpperCase(),800,T.disp,Wd*.78,30);x.font=`800 ${fs}px ${T.disp}`;x.textAlign='center';x.textBaseline='middle';x.fillText(s.t.toUpperCase(),Wd/2,H/2+2);},
   {action:'go'+i,rad:.0375,accent:s.col,order:6});
   const a=(i-2)*22*Math.PI/180;m.position.set(Math.sin(a)*.72,.9,-Math.cos(a)*.72);m.lookAt(0,1.45,0);vrNav.add(m);return m;});
-const vrHelp=panel(.62,.05,(x,Wd,H)=>{x.fillStyle='rgba(242,239,233,.8)';x.font=`600 22px ${T.body}`;x.textAlign='center';x.textBaseline='middle';x.fillText('Trigger / A: select   ·   Stick: turn   ·   B: back',Wd/2,H/2);},{frame:false,order:6});
-vrHelp.position.set(0,.8,-.74);vrHelp.lookAt(0,1.45,0);vrNav.add(vrHelp);
 const reticle=new THREE.Mesh(new THREE.RingGeometry(.012,.02,32),new THREE.MeshBasicMaterial({color:0xffffff,transparent:true,opacity:.9,depthTest:false}));reticle.renderOrder=10;reticle.visible=false;scene.add(reticle);
 const fader=new THREE.Mesh(new THREE.SphereGeometry(.3,16,12),new THREE.MeshBasicMaterial({color:0x000000,side:THREE.BackSide,transparent:true,opacity:0,depthTest:false}));fader.renderOrder=999;camera.add(fader);
 
