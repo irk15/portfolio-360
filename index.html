@@ -80,7 +80,7 @@ body{overflow:hidden;background:var(--ground);color:var(--ink);font-family:var(-
 <canvas id="world" tabindex="0" aria-label="Rohit Kumar's portfolio as a 360 degree studio"></canvas>
 
 <header class="top">
-  <div class="brand"><div class="mono">RK</div><div class="who"><b>Rohit Kumar</b><span>Multidisciplinary designer · v4</span></div></div>
+  <div class="brand"><div class="mono">RK</div><div class="who"><b>Rohit Kumar</b><span>Multidisciplinary designer · v5</span></div></div>
   <div class="acts">
     <button class="btn" id="snd" aria-pressed="false" aria-label="Toggle sound"><span class="bars"><i></i><i></i><i></i></span><span id="sndT">Sound</span></button>
     <button class="btn primary" id="vr">Enter VR</button>
@@ -168,7 +168,7 @@ const canvas=document.getElementById('world');
 const renderer=new THREE.WebGLRenderer({canvas,antialias:true,powerPreference:'high-performance'});
 renderer.setPixelRatio(Math.min(devicePixelRatio||1,2));renderer.setSize(innerWidth,innerHeight,false);
 renderer.xr.enabled=true;renderer.xr.setReferenceSpaceType('local-floor');
-if(renderer.xr.setFoveation)renderer.xr.setFoveation(.6);
+if(renderer.xr.setFoveation)renderer.xr.setFoveation(1);
 const scene=new THREE.Scene();scene.background=new THREE.Color(0x08080b);
 const camera=new THREE.PerspectiveCamera(68,innerWidth/innerHeight,.03,120);camera.rotation.order='YXZ';
 const rig=new THREE.Group();scene.add(rig);rig.add(camera);camera.position.set(0,1.6,0);
@@ -386,7 +386,7 @@ const vrNav=new THREE.Group();vrNav.visible=false;scene.add(vrNav);
 const vrNavBtns=SECTIONS.map((s,i)=>{const m=panel(.22,.075,(x,Wd,H)=>{x.fillStyle=s.col;x.fillRect(0,0,Wd,H);x.fillStyle='#0b0b0e';const fs=fit(x,s.t.toUpperCase(),800,T.disp,Wd*.78,30);x.font=`800 ${fs}px ${T.disp}`;x.textAlign='center';x.textBaseline='middle';x.fillText(s.t.toUpperCase(),Wd/2,H/2+2);},
   {action:'go'+i,rad:.0375,accent:s.col,order:6});
   const a=(i-2)*22*Math.PI/180;m.position.set(Math.sin(a)*.72,.9,-Math.cos(a)*.72);m.lookAt(0,1.45,0);vrNav.add(m);return m;});
-const vrHelp=panel(.62,.05,(x,Wd,H)=>{x.fillStyle='rgba(242,239,233,.8)';x.font=`600 22px ${T.body}`;x.textAlign='center';x.textBaseline='middle';x.fillText('Trigger / A: select   ·   Stick: next section   ·   B: back',Wd/2,H/2);},{frame:false,order:6});
+const vrHelp=panel(.62,.05,(x,Wd,H)=>{x.fillStyle='rgba(242,239,233,.8)';x.font=`600 22px ${T.body}`;x.textAlign='center';x.textBaseline='middle';x.fillText('Trigger / A: select   ·   Stick: turn   ·   B: back',Wd/2,H/2);},{frame:false,order:6});
 vrHelp.position.set(0,.8,-.74);vrHelp.lookAt(0,1.45,0);vrNav.add(vrHelp);
 const reticle=new THREE.Mesh(new THREE.RingGeometry(.012,.02,32),new THREE.MeshBasicMaterial({color:0xffffff,transparent:true,opacity:.9,depthTest:false}));reticle.renderOrder=10;reticle.visible=false;scene.add(reticle);
 const fader=new THREE.Mesh(new THREE.SphereGeometry(.3,16,12),new THREE.MeshBasicMaterial({color:0x000000,side:THREE.BackSide,transparent:true,opacity:0,depthTest:false}));fader.renderOrder=999;camera.add(fader);
@@ -421,7 +421,8 @@ function go(i){
   cur=i;movePill(i);caption(i);whoosh(.8);if(focused)unfocus();
   const a=SECTIONS[i].a*Math.PI/180;
   if(renderer.xr.isPresenting){const d=new THREE.Vector3();renderer.xr.getCamera().getWorldDirection(d);const head=Math.atan2(d.x,-d.z);
-    gsap.timeline().to(fader.material,{opacity:1,duration:.22,ease:'power2.in'}).add(()=>{W.rotation.y=a-head;}).to(fader.material,{opacity:0,duration:.4,ease:'power2.out'});}
+    let tgt=a-head,curR=W.rotation.y;while(tgt-curR>Math.PI)tgt-=Math.PI*2;while(tgt-curR<-Math.PI)tgt+=Math.PI*2;
+    turnVel=0;gsap.to(W.rotation,{y:tgt,duration:Math.min(1.6,.6+Math.abs(tgt-curR)*.35),ease:'sine.inOut',overwrite:true});}
   else{let tgt=-a;while(tgt-yawT>Math.PI)tgt-=Math.PI*2;while(tgt-yawT<-Math.PI)tgt+=Math.PI*2;
     gsap.to(proxy,{yaw:tgt,pitch:-.04,duration:RM?0:1.5,ease:'expo.inOut',onUpdate:()=>{yawT=proxy.yaw;pitchT=proxy.pitch;}});}
 }
@@ -502,20 +503,19 @@ const ctrls=[0,1].map(i=>{const c=renderer.xr.getController(i);
   // hands (no gamepad) use the system pinch -> select; controllers are polled below
   c.addEventListener('select',()=>{const src=c.userData.src;if(src&&src.gamepad&&!src.hand)return;const h=hitFrom(c);if(h)activate(h.object);else if(focused)unfocus();});
   rig.add(c);return c;});
-let stickCool=0;
+let stickCool=0,stickX=0,turnVel=0;
 function pollPads(dt){
-  stickCool-=dt;
+  stickCool-=dt;stickX=0;
   for(const c of ctrls){const src=c.userData.src;if(!src||!src.gamepad||src.hand)continue;const gp=src.gamepad,b=gp.buttons,pv=c.userData.prev;
     const down=k=>!!(b[k]&&b[k].pressed),edge=k=>{const d=down(k),e=d&&!pv[k];pv[k]=d;return e;};
     const trig=edge(0),aBtn=edge(4),bBtn=edge(5);edge(1);
     if(trig||aBtn){const h=hitFrom(c);if(h){activate(h.object);pulse(src);}else if(focused)unfocus();}
     if(bBtn){if(focused)unfocus();else go(0);pulse(src);}
     const ax=gp.axes[2]!==undefined?gp.axes[2]:(gp.axes[0]||0);
-    if(Math.abs(ax)>.7&&stickCool<=0){stickCool=.45;go((cur+(ax>0?1:4))%5);pulse(src);}
-    if(Math.abs(ax)<.3&&stickCool>0)stickCool=Math.min(stickCool,.05);}
+    if(Math.abs(ax)>.15){stickX=Math.sign(ax)*Math.pow((Math.abs(ax)-.15)/.85,1.6);gsap.killTweensOf(W.rotation);}}
 }
 function pulse(src){try{const h=src.gamepad.hapticActuators&&src.gamepad.hapticActuators[0];if(h&&h.pulse)h.pulse(.4,40);}catch(e){}}
-function vis(){return clickables.filter(m=>m.visible&&(m.parent!==vrNav||vrNav.visible));}
+const visList=[];function vis(){visList.length=0;for(const m of clickables)if(m.visible&&(m.parent!==vrNav||vrNav.visible))visList.push(m);return visList;}
 function hitFrom(c){rmat.identity().extractRotation(c.matrixWorld);ray.ray.origin.setFromMatrixPosition(c.matrixWorld);ray.ray.direction.set(0,0,-1).applyMatrix4(rmat);
   return ray.intersectObjects(vis(),false)[0];}
 
@@ -552,6 +552,7 @@ let starting=false;
 vrBtn.addEventListener('click',()=>{audioInit();if(!soundOn)setSound(true);const w=why();if(w){showNote(w);return;}if(starting)return;starting=true;vrBtn.textContent='Starting…';
   navigator.xr.requestSession('immersive-vr',{optionalFeatures:['local-floor','bounded-floor','hand-tracking']}).then(s=>renderer.xr.setSession(s).then(()=>{
     document.body.classList.add('xr');vrNav.visible=true;W.rotation.y=0;playIntro();
+    try{if(s.updateTargetFrameRate&&s.supportedFrameRates){const fr=[...s.supportedFrameRates];const pick=fr.includes(90)?90:fr.includes(72)?72:null;if(pick)s.updateTargetFrameRate(pick).catch(()=>{});}}catch(e){}
     s.addEventListener('end',()=>{starting=false;vrBtn.textContent='Enter VR';vrNav.visible=false;reticle.visible=false;W.rotation.y=0;camera.position.set(0,1.6,0);onResize();});
   })).catch(e=>{starting=false;vrBtn.textContent='Enter VR';showNote('<b>VR couldn\'t start:</b> '+((e&&(e.name+': '+e.message))||e));});
 });
@@ -559,19 +560,20 @@ function onResize(){P.mat.uniforms.uScale.value=innerHeight;if(renderer.xr.isPre
 addEventListener('resize',onResize);
 
 /* ============================== LOOP ============================== */
-const clock=new THREE.Clock();let navYaw=0,ringState='';
+const clock=new THREE.Clock(),hov=new Set();let navYaw=0,ringState='';
 renderer.setAnimationLoop(()=>{
   gsap.updateRoot(performance.now()/1000);
   if(introAt&&performance.now()-introAt>9000&&uReveal.value<.99){finishIntro();introAt=0;}
   const dt=Math.min(clock.getDelta(),.05);uTime.value+=dt;
   [mq1,mq2].forEach(m=>{m.material.uniforms.uScroll.value=(m.material.uniforms.uScroll.value+m.userData.speed*dt)%1;});
-  const hov=new Set();
+  hov.clear();
   if(renderer.xr.isPresenting){
     P.mat.uniforms.uScale.value=1600;
     const xc=renderer.xr.getCamera();xc.getWorldPosition(tmpV);xc.getWorldDirection(tmpV2);
     const hy=Math.atan2(tmpV2.x,-tmpV2.z);let dif=hy-navYaw;while(dif>Math.PI)dif-=Math.PI*2;while(dif<-Math.PI)dif+=Math.PI*2;if(Math.abs(dif)>.6)navYaw+=dif*Math.min(1,dt*2.5);
     vrNav.position.set(tmpV.x,0,tmpV.z);vrNav.rotation.y=-navYaw;
     pollPads(dt);
+    turnVel+=(stickX*1.25-turnVel)*Math.min(1,dt*6);if(Math.abs(turnVel)>.0005)W.rotation.y+=turnVel*dt;
     reticle.visible=false;
     for(const c of ctrls){const h=hitFrom(c);c.userData.line.scale.z=h?h.distance:4;if(h){hov.add(h.object);reticle.visible=true;reticle.position.copy(h.point);reticle.lookAt(tmpV);}}
   }else{
