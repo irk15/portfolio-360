@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Rohit Kumar — Portfolio 360</title>
 <meta name="description" content="Rohit Kumar, multidisciplinary designer. Step inside the portfolio in WebXR on Meta Quest.">
@@ -79,7 +80,7 @@ body{overflow:hidden;background:var(--ground);color:var(--ink);font-family:var(-
 <canvas id="world" tabindex="0" aria-label="Rohit Kumar's portfolio as a 360 degree studio"></canvas>
 
 <header class="top">
-  <div class="brand"><div class="mono">RK</div><div class="who"><b>Rohit Kumar</b><span>Multidisciplinary designer</span></div></div>
+  <div class="brand"><div class="mono">RK</div><div class="who"><b>Rohit Kumar</b><span>Multidisciplinary designer · v3</span></div></div>
   <div class="acts">
     <button class="btn" id="snd" aria-pressed="false" aria-label="Toggle sound"><span class="bars"><i></i><i></i><i></i></span><span id="sndT">Sound</span></button>
     <button class="btn primary" id="vr">Enter VR</button>
@@ -502,8 +503,9 @@ function hitFrom(c){rmat.identity().extractRotation(c.matrixWorld);ray.ray.origi
 const groups=[hero,...W.children.filter(o=>o.isMesh&&o.material.uniforms&&o!==floor&&o!==fOpen&&o!==fClose)];
 groups.forEach(g=>{g.userData.base=g.position.clone();});
 function setOp(o,v){(o.isGroup?o.children:[o]).forEach(m=>{if(m.material&&m.material.uniforms&&m.material.uniforms.uOp)m.material.uniforms.uOp.value=v;});}
-let intro=null;
-function playIntro(){
+let intro=null,introAt=0;
+function finishIntro(){if(intro)intro.kill();P.mat.uniforms.uA.value=1;P.mat.uniforms.uB.value=1;uReveal.value=1;groups.forEach(g=>{g.position.copy(g.userData.base);setOp(g,1);});}
+function playIntro(){introAt=performance.now();
   if(intro)intro.kill();
   P.mat.uniforms.uA.value=0;P.mat.uniforms.uB.value=0;uReveal.value=0;groups.forEach(g=>{setOp(g,0);g.position.copy(g.userData.base);});
   if(RM){P.mat.uniforms.uA.value=1;P.mat.uniforms.uB.value=1;uReveal.value=1;groups.forEach(g=>setOp(g,1));return;}
@@ -540,6 +542,7 @@ addEventListener('resize',onResize);
 const clock=new THREE.Clock();let navYaw=0,ringState='';
 renderer.setAnimationLoop(()=>{
   gsap.updateRoot(performance.now()/1000);
+  if(introAt&&performance.now()-introAt>9000&&uReveal.value<.99){finishIntro();introAt=0;}
   const dt=Math.min(clock.getDelta(),.05);uTime.value+=dt;
   [mq1,mq2].forEach(m=>{m.material.uniforms.uScroll.value=(m.material.uniforms.uScroll.value+m.userData.speed*dt)%1;});
   const hov=new Set();
