@@ -80,7 +80,7 @@ body{overflow:hidden;background:var(--ground);color:var(--ink);font-family:var(-
 <canvas id="world" tabindex="0" aria-label="Rohit Kumar's portfolio as a 360 degree studio"></canvas>
 
 <header class="top">
-  <div class="brand"><div class="mono">RK</div><div class="who"><b>Rohit Kumar</b><span>Multidisciplinary designer · v3</span></div></div>
+  <div class="brand"><div class="mono">RK</div><div class="who"><b>Rohit Kumar</b><span>Multidisciplinary designer · v4</span></div></div>
   <div class="acts">
     <button class="btn" id="snd" aria-pressed="false" aria-label="Toggle sound"><span class="bars"><i></i><i></i><i></i></span><span id="sndT">Sound</span></button>
     <button class="btn primary" id="vr">Enter VR</button>
@@ -386,7 +386,9 @@ const vrNav=new THREE.Group();vrNav.visible=false;scene.add(vrNav);
 const vrNavBtns=SECTIONS.map((s,i)=>{const m=panel(.22,.075,(x,Wd,H)=>{x.fillStyle=s.col;x.fillRect(0,0,Wd,H);x.fillStyle='#0b0b0e';const fs=fit(x,s.t.toUpperCase(),800,T.disp,Wd*.78,30);x.font=`800 ${fs}px ${T.disp}`;x.textAlign='center';x.textBaseline='middle';x.fillText(s.t.toUpperCase(),Wd/2,H/2+2);},
   {action:'go'+i,rad:.0375,accent:s.col,order:6});
   const a=(i-2)*22*Math.PI/180;m.position.set(Math.sin(a)*.72,.9,-Math.cos(a)*.72);m.lookAt(0,1.45,0);vrNav.add(m);return m;});
-const reticle=new THREE.Mesh(new THREE.RingGeometry(.008,.013,24),new THREE.MeshBasicMaterial({color:0xffffff,transparent:true,opacity:.9,depthTest:false}));reticle.renderOrder=10;reticle.visible=false;scene.add(reticle);
+const vrHelp=panel(.62,.05,(x,Wd,H)=>{x.fillStyle='rgba(242,239,233,.8)';x.font=`600 22px ${T.body}`;x.textAlign='center';x.textBaseline='middle';x.fillText('Trigger / A: select   ·   Stick: next section   ·   B: back',Wd/2,H/2);},{frame:false,order:6});
+vrHelp.position.set(0,.8,-.74);vrHelp.lookAt(0,1.45,0);vrNav.add(vrHelp);
+const reticle=new THREE.Mesh(new THREE.RingGeometry(.012,.02,32),new THREE.MeshBasicMaterial({color:0xffffff,transparent:true,opacity:.9,depthTest:false}));reticle.renderOrder=10;reticle.visible=false;scene.add(reticle);
 const fader=new THREE.Mesh(new THREE.SphereGeometry(.3,16,12),new THREE.MeshBasicMaterial({color:0x000000,side:THREE.BackSide,transparent:true,opacity:0,depthTest:false}));fader.renderOrder=999;camera.add(fader);
 
 /* ============================== AUDIO ============================== */
@@ -492,9 +494,27 @@ document.querySelectorAll('.btn,.nav button').forEach(b=>{b.addEventListener('mo
 // VR controllers / hands
 const lineGeo=new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(0,0,0),new THREE.Vector3(0,0,-1)]);
 const ctrls=[0,1].map(i=>{const c=renderer.xr.getController(i);
-  const ln=new THREE.Line(lineGeo,new THREE.LineBasicMaterial({color:0xff6a2b,transparent:true,opacity:.7}));ln.scale.z=4;c.add(ln);c.userData.line=ln;
-  c.addEventListener('select',()=>{const h=hitFrom(c);if(h)activate(h.object);else if(focused)unfocus();});
+  const ln=new THREE.Line(lineGeo,new THREE.LineBasicMaterial({color:0xffb08a,transparent:true,opacity:.95}));ln.scale.z=4;c.add(ln);c.userData.line=ln;
+  c.userData.src=null;c.userData.prev={};
+  c.addEventListener('connected',e=>{c.userData.src=e.data;c.userData.line.visible=!!e.data.gamepad||!!e.data.hand;
+    c.userData.line.material.opacity=e.data.handedness==='right'?.95:.45;});
+  c.addEventListener('disconnected',()=>{c.userData.src=null;});
+  // hands (no gamepad) use the system pinch -> select; controllers are polled below
+  c.addEventListener('select',()=>{const src=c.userData.src;if(src&&src.gamepad&&!src.hand)return;const h=hitFrom(c);if(h)activate(h.object);else if(focused)unfocus();});
   rig.add(c);return c;});
+let stickCool=0;
+function pollPads(dt){
+  stickCool-=dt;
+  for(const c of ctrls){const src=c.userData.src;if(!src||!src.gamepad||src.hand)continue;const gp=src.gamepad,b=gp.buttons,pv=c.userData.prev;
+    const down=k=>!!(b[k]&&b[k].pressed),edge=k=>{const d=down(k),e=d&&!pv[k];pv[k]=d;return e;};
+    const trig=edge(0),aBtn=edge(4),bBtn=edge(5);edge(1);
+    if(trig||aBtn){const h=hitFrom(c);if(h){activate(h.object);pulse(src);}else if(focused)unfocus();}
+    if(bBtn){if(focused)unfocus();else go(0);pulse(src);}
+    const ax=gp.axes[2]!==undefined?gp.axes[2]:(gp.axes[0]||0);
+    if(Math.abs(ax)>.7&&stickCool<=0){stickCool=.45;go((cur+(ax>0?1:4))%5);pulse(src);}
+    if(Math.abs(ax)<.3&&stickCool>0)stickCool=Math.min(stickCool,.05);}
+}
+function pulse(src){try{const h=src.gamepad.hapticActuators&&src.gamepad.hapticActuators[0];if(h&&h.pulse)h.pulse(.4,40);}catch(e){}}
 function vis(){return clickables.filter(m=>m.visible&&(m.parent!==vrNav||vrNav.visible));}
 function hitFrom(c){rmat.identity().extractRotation(c.matrixWorld);ray.ray.origin.setFromMatrixPosition(c.matrixWorld);ray.ray.direction.set(0,0,-1).applyMatrix4(rmat);
   return ray.intersectObjects(vis(),false)[0];}
@@ -551,6 +571,7 @@ renderer.setAnimationLoop(()=>{
     const xc=renderer.xr.getCamera();xc.getWorldPosition(tmpV);xc.getWorldDirection(tmpV2);
     const hy=Math.atan2(tmpV2.x,-tmpV2.z);let dif=hy-navYaw;while(dif>Math.PI)dif-=Math.PI*2;while(dif<-Math.PI)dif+=Math.PI*2;if(Math.abs(dif)>.6)navYaw+=dif*Math.min(1,dt*2.5);
     vrNav.position.set(tmpV.x,0,tmpV.z);vrNav.rotation.y=-navYaw;
+    pollPads(dt);
     reticle.visible=false;
     for(const c of ctrls){const h=hitFrom(c);c.userData.line.scale.z=h?h.distance:4;if(h){hov.add(h.object);reticle.visible=true;reticle.position.copy(h.point);reticle.lookAt(tmpV);}}
   }else{
