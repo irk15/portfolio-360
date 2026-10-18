@@ -128,6 +128,7 @@ body{overflow:hidden;background:var(--ground);color:var(--ink);font-family:var(-
 <script>
 (function(){
 "use strict";
+gsap.ticker.remove(gsap.updateRoot);
 const RM=matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 /* ============================== CONTENT ============================== */
@@ -271,7 +272,7 @@ const PANEL_F=`uniform sampler2D map;uniform vec2 uSize,uFull;uniform float uHov
     gl_FragColor=vec4(col,a);}`;
 
 function panel(w,h,draw,o){
-  o=o||{};const frame=o.frame!==false,M=frame?.08:0;
+  o=o||{};const frame=o.frame!==false,M=frame?Math.min(.08,h*.3):0;
   const cv=document.createElement('canvas');cv.width=Math.min(2048,Math.round(w*PPM*(o.texW||1)));cv.height=Math.min(2048,Math.round(h*PPM));
   const x=cv.getContext('2d');const tex=new THREE.CanvasTexture(cv);tex.anisotropy=Math.min(8,renderer.capabilities.getMaxAnisotropy());
   if(o.repeat)tex.wrapS=THREE.RepeatWrapping;
@@ -381,9 +382,9 @@ const fClose=panel(.36,.14,(x,Wd,H)=>{x.fillStyle='#1a1a20';x.fillRect(0,0,Wd,H)
 
 /* ---------- VR waist menu ---------- */
 const vrNav=new THREE.Group();vrNav.visible=false;scene.add(vrNav);
-const vrNavBtns=SECTIONS.map((s,i)=>{const m=panel(.2,.07,(x,Wd,H)=>{x.fillStyle=s.col;x.fillRect(0,0,Wd,H);x.fillStyle='#0b0b0e';x.font=`800 26px ${T.disp}`;x.textAlign='center';x.fillText(s.t.toUpperCase(),Wd/2,H/2+9);},
-  {action:'go'+i,rad:.035,accent:s.col,order:6});
-  const a=(i-2)*13*Math.PI/180;m.position.set(Math.sin(a)*.62,.92,-Math.cos(a)*.62);m.lookAt(0,1.45,0);vrNav.add(m);return m;});
+const vrNavBtns=SECTIONS.map((s,i)=>{const m=panel(.22,.075,(x,Wd,H)=>{x.fillStyle=s.col;x.fillRect(0,0,Wd,H);x.fillStyle='#0b0b0e';const fs=fit(x,s.t.toUpperCase(),800,T.disp,Wd*.78,30);x.font=`800 ${fs}px ${T.disp}`;x.textAlign='center';x.textBaseline='middle';x.fillText(s.t.toUpperCase(),Wd/2,H/2+2);},
+  {action:'go'+i,rad:.0375,accent:s.col,order:6});
+  const a=(i-2)*22*Math.PI/180;m.position.set(Math.sin(a)*.72,.9,-Math.cos(a)*.72);m.lookAt(0,1.45,0);vrNav.add(m);return m;});
 const reticle=new THREE.Mesh(new THREE.RingGeometry(.008,.013,24),new THREE.MeshBasicMaterial({color:0xffffff,transparent:true,opacity:.9,depthTest:false}));reticle.renderOrder=10;reticle.visible=false;scene.add(reticle);
 const fader=new THREE.Mesh(new THREE.SphereGeometry(.3,16,12),new THREE.MeshBasicMaterial({color:0x000000,side:THREE.BackSide,transparent:true,opacity:0,depthTest:false}));fader.renderOrder=999;camera.add(fader);
 
@@ -538,6 +539,7 @@ addEventListener('resize',onResize);
 /* ============================== LOOP ============================== */
 const clock=new THREE.Clock();let navYaw=0,ringState='';
 renderer.setAnimationLoop(()=>{
+  gsap.updateRoot(performance.now()/1000);
   const dt=Math.min(clock.getDelta(),.05);uTime.value+=dt;
   [mq1,mq2].forEach(m=>{m.material.uniforms.uScroll.value=(m.material.uniforms.uScroll.value+m.userData.speed*dt)%1;});
   const hov=new Set();
