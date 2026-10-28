@@ -1,9 +1,4 @@
-<!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="description" content="Rohit Kumar, multimedia designer in Toronto. A portfolio built as an infinite design canvas.">
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Rohit Kumar | Portfolio</title></head><body style="margin:0">
 <title>Rohit Kumar</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -146,6 +141,9 @@ body.present .pbar { display: flex; }
 /* ============ FRAMES ============ */
 .fi h1, .fi h2, .fi h3, .fi p, .fi ul { margin: 0; padding: 0; }
 .fi .art { position: absolute; inset: 0; }
+.fi .shot { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; user-select: none; }
+.pf .live { position: absolute; right: 36px; top: 28px; z-index: 3; text-decoration: none; font: 600 15px var(--f-ui, sans-serif); padding: 11px 20px; border-radius: 999px; background: #FF4A1C; color: #0E0E0E; transition: transform .2s; }
+.pf .live:hover { transform: translateY(-2px); background: #fff; }
 .fi .art svg { width: 100%; height: 100%; display: block; }
 
 /* Hero */
@@ -200,18 +198,11 @@ body.present .pbar { display: flex; }
 .pf .tg { position: absolute; left: 36px; top: 32px; display: flex; gap: 8px; }
 .pf .tg span { font: 500 13px var(--f-mono); text-transform: uppercase; letter-spacing: .04em; padding: 5px 12px; border-radius: 999px; background: rgba(255,255,255,.92); color: #0E0E0E; }
 .pf .bd { position: absolute; left: 40px; right: 40px; bottom: 34px; color: #fff; }
-.pf h2 { margin-bottom: 14px; }
+.pf h2 { margin-bottom: 10px; font: italic 500 68px/.95 var(--f-serif); letter-spacing: -.02em; text-shadow: 0 2px 24px rgba(0,0,0,.55); }
 .pf p { font-size: 20px; line-height: 1.35; max-width: 34ch; }
-#f-meridian h2 { font: italic 500 148px/.86 var(--f-serif); letter-spacing: -.03em; }
-#f-vice h2 { font: 500 112px/.9 var(--f-mono); text-transform: uppercase; letter-spacing: -.04em; text-shadow: 0 0 28px #FF3D8B, 0 0 3px #3DF0FF; }
-#f-vice .fi::after { content: ""; position: absolute; inset: 0; background: repeating-linear-gradient(0deg, rgba(0,0,0,.16) 0 2px, transparent 2px 5px); pointer-events: none; }
-#f-wealth h2 { font: 400 158px/.84 var(--f-disp); text-transform: uppercase; color: #FFE7AA; }
-#f-p360 h2 { font: 600 150px/.86 var(--f-ui); letter-spacing: -.06em; }
 #f-spike .shade { background: none; }
 #f-spike .bd { color: #24160F; }
-#f-spike h2 { font: 600 128px/.88 var(--f-ui); letter-spacing: -.06em; }
 #f-spike .tg span { background: #24160F; color: #fff; }
-#f-dreams h2 { font: italic 500 112px/.9 var(--f-serif); letter-spacing: -.03em; max-width: 12ch; }
 
 /* More work: sticky notes */
 #f-more .fi { background-color: #F7F7F5; background-image: radial-gradient(#D5D7DB 1.4px, transparent 1.8px); background-size: 26px 26px; padding: 40px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 26px; align-content: center; }
@@ -227,8 +218,17 @@ body.present .pbar { display: flex; }
 .st:nth-child(6) { background: #FFC38A; transform: rotate(1deg); }
 
 /* Contact */
-#f-contact .fi { background: #0E0E0E; color: #fff; padding: 56px; display: flex; flex-direction: column; justify-content: space-between; }
-.c-t { font: 400 250px/.82 var(--f-disp); text-transform: uppercase; }
+#f-contact .fi { background: #0E0E0E; color: #fff; padding: 56px; display: grid; grid-template-columns: 1.1fr .9fr; gap: 48px; }
+.c-l { display: flex; flex-direction: column; justify-content: space-between; min-width: 0; }
+.c-p { font-size: 20px; line-height: 1.4; color: #B9BDC6; max-width: 34ch; margin: 18px 0; }
+.c-row.sm a { font-size: 16px; padding: 12px 20px; background: #1d1f23; color: #fff; }
+.cb { font: 600 16px var(--f-ui, sans-serif); padding: 16px 24px; border-radius: 999px; border: 1px solid #3a3d44; background: transparent; color: #fff; cursor: pointer; }
+.c-f { display: flex; flex-direction: column; gap: 14px; align-self: end; }
+.c-f label { display: grid; gap: 6px; font: 500 13px var(--f-mono); text-transform: uppercase; letter-spacing: .06em; color: #8B909A; }
+.c-f input, .c-f textarea { font: 400 18px var(--f-ui, sans-serif); text-transform: none; letter-spacing: 0; padding: 14px 16px; border-radius: 10px; border: 1px solid #3a3d44; background: #17181b; color: #fff; outline: none; resize: none; width: 100%; box-sizing: border-box; }
+.c-f input:focus, .c-f textarea:focus { border-color: #FF4A1C; }
+.cs { font: 600 20px var(--f-ui, sans-serif); padding: 16px 26px; border-radius: 999px; border: 0; background: #FF4A1C; color: #0E0E0E; cursor: pointer; }
+.c-t { font: 400 150px/.84 var(--f-disp); text-transform: uppercase; }
 .c-t em { font-style: normal; color: #FF4A1C; }
 .c-row { display: flex; gap: 14px; flex-wrap: wrap; align-items: center; }
 .c-row a { text-decoration: none; font-weight: 600; font-size: 22px; padding: 18px 30px; border-radius: 999px; background: #fff; color: #0E0E0E; }
@@ -302,49 +302,51 @@ body.present .pbar { display: flex; }
     </section>
 
     <section class="fr pf" id="f-meridian">
-      <button class="frname" data-sel="meridian">Meridian</button>
-      <div class="fi"><div class="art" data-art="meridian"></div><div class="shade"></div>
-        <div class="tg"><span>Website</span><span>Motion</span><span>AI imagery</span></div>
-        <div class="bd"><h2>Meridian</h2><p>A day of light in a Toronto penthouse. Five rooms, four times of day each.</p></div></div>
-      <div class="pin" style="left:960px;top:20px"><button type="button" aria-label="Comment">RK</button><div class="note"><b>Rohit</b>Five rooms times four times of day is 20 hero stills. Cut scope, not craft.</div></div>
+      <button class="frname" data-sel="meridian">Harbour Atelier</button>
+      <div class="fi"><img class="shot" src="shots/harbour.jpg" alt="Harbour Atelier, live screenshot" draggable="false"><div class="shade"></div>
+        <div class="tg"><span>Three.js</span><span>Interactive</span></div>
+        <div class="bd"><h2>Harbour Atelier</h2><p>A living harbour you can orbit, from daylight to blue hour.</p></div>
+        <a class="live" href="https://irk15.github.io/3D-/harbour/" target="_blank" rel="noopener">Launch live &#8599;</a></div>
     </section>
 
     <section class="fr pf" id="f-vice">
-      <button class="frname" data-sel="vice">Vice City</button>
-      <div class="fi"><div class="art" data-art="vice"></div><div class="shade"></div>
-        <div class="tg"><span>Three.js</span><span>VR</span></div>
-        <div class="bd"><h2>Vice City</h2><p>A neon 1980s Miami city that doubles as a strategy dashboard, with a VR build for Quest 3.</p></div></div>
-      <div class="pin" style="left:960px;top:20px"><button type="button" aria-label="Comment">RK</button><div class="note"><b>Rohit</b>Same city twice: a desktop dashboard and a VR version you can roam.</div></div>
+      <button class="frname" data-sel="vice">Cala Rosa</button>
+      <div class="fi"><img class="shot" src="shots/cala.jpg" alt="Cala Rosa, live screenshot" draggable="false"><div class="shade"></div>
+        <div class="tg"><span>Three.js</span><span>Diorama</span></div>
+        <div class="bd"><h2>Cala Rosa</h2><p>A Mediterranean seaside village with nineteen moving townsfolk.</p></div>
+        <a class="live" href="https://irk15.github.io/3D-/cala-rosa/" target="_blank" rel="noopener">Launch live &#8599;</a></div>
     </section>
 
     <section class="fr pf" id="f-wealth">
       <button class="frname" data-sel="wealth">Wealth City</button>
-      <div class="fi"><div class="art" data-art="wealth"></div><div class="shade"></div>
-        <div class="tg"><span>Three.js</span><span>3D dashboard</span></div>
-        <div class="bd"><h2>Wealth City</h2><p>Mutual fund SIP plans as a 3D city, in one HTML file.</p></div></div>
-      <div class="pin" style="left:960px;top:20px"><button type="button" aria-label="Comment">RK</button><div class="note"><b>Rohit</b>One file, no build step. Open it anywhere and it runs.</div></div>
+      <div class="fi"><img class="shot" src="shots/wealth.jpg" alt="Wealth City, live screenshot" draggable="false"><div class="shade"></div>
+        <div class="tg"><span>Three.js</span><span>Fintech</span></div>
+        <div class="bd"><h2>Wealth City</h2><p>Mutual fund SIP plans as a 3D city.</p></div>
+        <a class="live" href="https://irk15.github.io/3D-/wealth-city/" target="_blank" rel="noopener">Launch live &#8599;</a></div>
     </section>
 
     <section class="fr pf" id="f-p360">
-      <button class="frname" data-sel="p360">Portfolio 360</button>
-      <div class="fi"><div class="art" data-art="p360"></div><div class="shade"></div>
-        <div class="tg"><span>WebXR</span><span>Meta Quest 3</span></div>
-        <div class="bd"><h2>Portfolio 360</h2><p>Five WebXR worlds for Meta Quest 3, collected on one page.</p></div></div>
+      <button class="frname" data-sel="p360">Showroom</button>
+      <div class="fi"><img class="shot" src="shots/showroom.jpg" alt="Showroom, live screenshot" draggable="false"><div class="shade"></div>
+        <div class="tg"><span>WebGL</span><span>Product</span></div>
+        <div class="bd"><h2>Showroom</h2><p>A product showroom with real PBR finishes.</p></div>
+        <a class="live" href="https://irk15.github.io/portfolio-360/showroom/" target="_blank" rel="noopener">Launch live &#8599;</a></div>
     </section>
 
     <section class="fr pf" id="f-spike">
-      <button class="frname" data-sel="spike">SpikeShields</button>
-      <div class="fi"><div class="art" data-art="spike"></div><div class="shade"></div>
-        <div class="tg"><span>Shopify</span><span>Brand</span></div>
-        <div class="bd"><h2>SpikeShields</h2><p>A full Shopify storefront for a Canadian drink-spiking detection product.</p></div></div>
-      <div class="pin" style="left:960px;top:20px"><button type="button" aria-label="Comment">RK</button><div class="note"><b>Rohit</b>House rule: mobile fixes only ever touch the 860px breakpoint, never desktop.</div></div>
+      <button class="frname" data-sel="spike">Studio</button>
+      <div class="fi"><img class="shot" src="shots/studio.jpg" alt="Studio, live screenshot" draggable="false"><div class="shade"></div>
+        <div class="tg"><span>WebGL</span><span>Brand</span></div>
+        <div class="bd"><h2>Studio</h2><p>A studio space rendered live in the browser.</p></div>
+        <a class="live" href="https://irk15.github.io/portfolio-360/studio/" target="_blank" rel="noopener">Launch live &#8599;</a></div>
     </section>
 
     <section class="fr pf" id="f-dreams">
-      <button class="frname" data-sel="dreams">Dreams Without Reasons</button>
-      <div class="fi"><div class="art" data-art="dreams"></div><div class="shade"></div>
-        <div class="tg"><span>AI reel</span><span>30 seconds</span></div>
-        <div class="bd"><h2>Dreams Without Reasons</h2><p>A short reel starring me, shot by shot.</p></div></div>
+      <button class="frname" data-sel="dreams">INSTRUMENT</button>
+      <div class="fi"><img class="shot" src="shots/instrument.jpg" alt="INSTRUMENT, live screenshot" draggable="false"><div class="shade"></div>
+        <div class="tg"><span>Interface</span><span>Motion</span></div>
+        <div class="bd"><h2>INSTRUMENT</h2><p>An instrument-style interface study.</p></div>
+        <a class="live" href="https://irk15.github.io/portfolio-360/instrument/" target="_blank" rel="noopener">Launch live &#8599;</a></div>
     </section>
 
     <section class="fr" id="f-more">
@@ -362,13 +364,17 @@ body.present .pbar { display: flex; }
     <section class="fr" id="f-contact">
       <button class="frname" data-sel="contact">Contact</button>
       <div class="fi">
-        <h2 class="c-t">Say<br><em>hello</em></h2>
-        <div class="c-row">
-          <a class="pri" href="https://irohitk.framer.website" target="_blank" rel="noopener">Full portfolio &#8599;</a>
-          <a href="https://irk15.github.io/portfolio-360" target="_blank" rel="noopener">Portfolio 360 &#8599;</a>
-          <a href="https://github.com/irk15" target="_blank" rel="noopener">GitHub &#8599;</a>
-        </div>
-        <div class="c-end">End of prototype</div>
+        <div class="c-l"><h2 class="c-t">Say<br><em>hello</em></h2>
+          <p class="c-p">Projects, collaborations, or how something was built. Write here or email directly.</p>
+          <div class="c-row"><a class="pri" id="cMail" href="mailto:rohit.socialenza@gmail.com">rohit.socialenza@gmail.com</a><button type="button" id="cCopy" class="cb">Copy address</button></div>
+          <div class="c-row sm"><a href="https://irohitk.framer.website" target="_blank" rel="noopener">Full portfolio &#8599;</a><a href="https://irk15.github.io/portfolio-360" target="_blank" rel="noopener">Portfolio 360 &#8599;</a><a href="https://github.com/irk15" target="_blank" rel="noopener">GitHub &#8599;</a></div></div>
+        <form class="c-f" id="cForm" novalidate>
+          <label>Your name<input id="cName" type="text" autocomplete="name"></label>
+          <label>Your email<input id="cEmail" type="email" autocomplete="email"></label>
+          <label>Message<textarea id="cMsg" rows="5"></textarea></label>
+          <button class="cs" type="submit">Write the email &#8599;</button>
+          <div class="c-end" id="cStat" role="status">Opens your email app with the message ready to send</div>
+        </form>
       </div>
     </section>
 
@@ -381,7 +387,7 @@ body.present .pbar { display: flex; }
   <div class="l">
     <span class="logo" aria-hidden="true">RK</span>
     <span class="crumb">Rohit Kumar <span>/ Portfolio 2026</span></span>
-    <span class="badge">View only</span>
+    
   </div>
   <div class="r">
     <span class="avs" aria-hidden="true"><span class="av">RK</span><span class="av b">You</span></span>
@@ -505,18 +511,18 @@ body.present .pbar { display: flex; }
       code: '.about {\n  background: #F3F3F0;\n  font: italic 500 50px/1.08 "Fraunces";\n  letter-spacing: -.01em;\n}' },
     { id: 'studio', name: 'Studio kit', g: 'Intro', x: 2240, y: 0, w: 800, h: 800, tags: ['Services', 'Tools'], desc: 'What the studio delivers, the tools behind it, and the palette and type this file is built from.', stack: 'After Effects, Blender, Three.js, GSAP, WebXR, Higgsfield, Kling, Seedance, Wan, ElevenLabs, Shopify, Vercel',
       code: ':root {\n  --signal: #FF4A1C;\n  --ink: #0E0E0E;\n  --paper: #F3F3F0;\n  --canvas: #E7E8EA;\n  --display: "Anton";\n  --serif: "Fraunces";\n  --ui: "Geist";\n}' },
-    { id: 'meridian', name: 'Meridian', g: 'Projects', x: 0, y: 1000, w: 1000, h: 640, tags: ['Website', 'Motion', 'AI imagery'], desc: 'A cinematic one-page site about a luxury Toronto penthouse, told through a single day of light. Five rooms, four times of day each, and a scrubbable 24-hour timeline. An eight-week solo build.', stack: 'GSAP, Seedance, GPT Image, Vercel',
-      code: '.meridian {\n  background: linear-gradient(90deg,\n    #F29E8A, #8DBEEA, #6E4F96, #0D1230);\n  font: italic 500 148px/.86 "Fraunces";\n  letter-spacing: -.03em;\n}' },
-    { id: 'vice', name: 'Vice City', g: 'Projects', x: 1160, y: 1000, w: 1000, h: 640, tags: ['Three.js', 'VR'], desc: 'A neon 1980s Miami city that doubles as a strategy dashboard, with a VR build you can roam on Meta Quest 3.', stack: 'Three.js, WebXR',
-      code: '.vice {\n  background: linear-gradient(#1E0A44,\n    #D42E86 60%, #FF9A3C);\n  font: 500 112px/.9 "Geist Mono";\n  text-shadow: 0 0 28px #FF3D8B;\n}' },
-    { id: 'wealth', name: 'Wealth City', g: 'Projects', x: 2320, y: 1000, w: 1000, h: 640, tags: ['Three.js', '3D dashboard'], desc: 'A single-file Three.js dashboard that turns mutual fund SIP plans into a city, built to help a financial broker explain investing to new clients.', stack: 'Three.js, vanilla JavaScript',
-      code: '.wealth {\n  background: linear-gradient(135deg,\n    #1D2845, #7A5278);\n  color: #FFE7AA;\n  font: 400 158px/.84 "Anton";\n}' },
-    { id: 'p360', name: 'Portfolio 360', g: 'Projects', x: 0, y: 1840, w: 1000, h: 640, tags: ['WebXR', 'Meta Quest 3'], desc: 'My portfolio as a place you can stand in. Five WebXR worlds on one GitHub Pages site, including a studio, a showroom and a walkable luxury penthouse.', stack: 'WebXR, Three.js, GitHub Pages', link: ['Open Portfolio 360', 'https://irk15.github.io/portfolio-360'],
-      code: '.p360 {\n  background: linear-gradient(135deg,\n    #2B6F7C, #C98A79, #F5C28E);\n  font: 600 150px/.86 "Geist";\n  letter-spacing: -.06em;\n}' },
-    { id: 'spike', name: 'SpikeShields', g: 'Projects', x: 1160, y: 1840, w: 1000, h: 640, tags: ['Shopify', 'Brand'], desc: 'The full storefront for a Canadian drink-spiking detection product: a custom design system, a sticky-scroll How It Works, mobile performance work and AI product imagery.', stack: 'Shopify Liquid, CSS, JavaScript, GPT Image, Kling',
-      code: '.spike {\n  background: linear-gradient(135deg,\n    #F9D8E5, #DCD0F4);\n  --pink: #D63F7A;\n  font: 600 128px/.88 "Geist";\n}' },
-    { id: 'dreams', name: 'Dreams Without Reasons', g: 'Projects', x: 2320, y: 1840, w: 1000, h: 640, tags: ['AI reel', '30 seconds'], desc: 'A short reel starring me, built shot by shot. The look comes from my own recurring dreams: hyper-saturated, surreal and perfectly still.', stack: 'Wan, GPT Image',
-      code: '.dreams {\n  background: linear-gradient(#0B7183, #52C0CB);\n  --terracotta: #C9582F;\n  --vermilion: #E2431F;\n  font: italic 500 112px/.9 "Fraunces";\n}' },
+    { id: 'meridian', name: 'Harbour Atelier', g: 'Projects', x: 0, y: 1000, w: 1000, h: 640, tags: ['Three.js', 'Interactive'], desc: 'A cinematic Three.js miniature: a lighthouse, a working crane, boats and townsfolk, with daylight and blue-hour modes, a cinematic tour and a quality preset. Built as one scene that plays back live in the browser.', stack: 'Three.js, JavaScript, WebGL', link: ['Open Harbour Atelier', 'https://irk15.github.io/3D-/harbour/'],
+      code: '.shot {\\n  width: 100%;\\n  height: 100%;\\n  object-fit: cover;\\n}\\n/* live: https://irk15.github.io/3D-/harbour/ */' },
+    { id: 'vice', name: 'Cala Rosa', g: 'Projects', x: 1160, y: 1000, w: 1000, h: 640, tags: ['Three.js', 'Diorama'], desc: 'A live 1:30 scale diorama with townsfolk, birds and boats, three lighting moods (midday, golden hour, blue hour), tilt-shift depth of field and a drifting camera.', stack: 'Three.js, post-processing', link: ['Open Cala Rosa', 'https://irk15.github.io/3D-/cala-rosa/'],
+      code: '.shot {\\n  width: 100%;\\n  height: 100%;\\n  object-fit: cover;\\n}\\n/* live: https://irk15.github.io/3D-/cala-rosa/ */' },
+    { id: 'wealth', name: 'Wealth City', g: 'Projects', x: 2320, y: 1000, w: 1000, h: 640, tags: ['Three.js', 'Fintech'], desc: 'A Three.js planner that turns a monthly SIP into a growing city: pick goals, set the amount, step-up and expected return, scrub through the years and send the plan to the advisor on WhatsApp. English and Hindi.', stack: 'Three.js, vanilla JavaScript', link: ['Open Wealth City', 'https://irk15.github.io/3D-/wealth-city/'],
+      code: '.shot {\\n  width: 100%;\\n  height: 100%;\\n  object-fit: cover;\\n}\\n/* live: https://irk15.github.io/3D-/wealth-city/ */' },
+    { id: 'p360', name: 'Showroom', g: 'Projects', x: 0, y: 1840, w: 1000, h: 640, tags: ['WebGL', 'Product'], desc: 'An interactive sofa showroom with physically based materials and switchable finishes, part of the Portfolio 360 collection of WebXR-ready worlds.', stack: 'Three.js, PBR materials', link: ['Open Showroom', 'https://irk15.github.io/portfolio-360/showroom/'],
+      code: '.shot {\\n  width: 100%;\\n  height: 100%;\\n  object-fit: cover;\\n}\\n/* live: https://irk15.github.io/portfolio-360/showroom/ */' },
+    { id: 'spike', name: 'Studio', g: 'Projects', x: 1160, y: 1840, w: 1000, h: 640, tags: ['WebGL', 'Brand'], desc: 'The studio world from Portfolio 360: a spatial brand piece that runs in the browser and is ready for Meta Quest 3.', stack: 'Three.js, WebXR', link: ['Open Studio', 'https://irk15.github.io/portfolio-360/studio/'],
+      code: '.shot {\\n  width: 100%;\\n  height: 100%;\\n  object-fit: cover;\\n}\\n/* live: https://irk15.github.io/portfolio-360/studio/ */' },
+    { id: 'dreams', name: 'INSTRUMENT', g: 'Projects', x: 2320, y: 1840, w: 1000, h: 640, tags: ['Interface', 'Motion'], desc: 'A dark, precise interface study from the Portfolio 360 collection, focused on typography, dials and motion.', stack: 'HTML, CSS, JavaScript', link: ['Open INSTRUMENT', 'https://irk15.github.io/portfolio-360/instrument/'],
+      code: '.shot {\\n  width: 100%;\\n  height: 100%;\\n  object-fit: cover;\\n}\\n/* live: https://irk15.github.io/portfolio-360/instrument/ */' },
     { id: 'more', name: 'More work', g: 'Index', x: 0, y: 2680, w: 1000, h: 640, tags: ['Six projects'], desc: 'Motion Poster Studio, spec ad campaigns, Mira, the Fire TV launcher, creative tools and Discipline Engine, pinned up as sticky notes.', stack: 'HTML, CSS, JavaScript, Higgsfield, Kling, Seedance, ElevenLabs',
       code: '.sticky {\n  transform: rotate(-2deg);\n  background: #FFE066;\n  font: 400 32px/1 "Anton";\n}' },
     { id: 'contact', name: 'Contact', g: 'Index', x: 1160, y: 2680, w: 1000, h: 640, tags: ['Links'], desc: 'Projects, collaborations and questions about how something was built.', stack: '', links: [['Full portfolio', 'https://irohitk.framer.website'], ['Portfolio 360', 'https://irk15.github.io/portfolio-360'], ['GitHub', 'https://github.com/irk15']],
@@ -572,6 +578,7 @@ body.present .pbar { display: flex; }
   var ptrs = {}, moved = false, down = null, vel = { x: 0, y: 0 }, pinch = null, tool = 'move';
   vp.addEventListener('pointerdown', function (e) {
     if (e.button && e.button !== 0) return;
+    if (e.target.closest && e.target.closest('input,textarea,select,.live,.cb,.cs,a')) return;
     ptrs[e.pointerId] = { x: e.clientX, y: e.clientY };
     stopFly(); inertia = false; moved = false;
     var n = Object.keys(ptrs).length;
@@ -741,6 +748,7 @@ body.present .pbar { display: flex; }
   $('#presentBtn').addEventListener('click', function () { present(true); }); $('#pExit').addEventListener('click', function () { present(false); });
   document.addEventListener('keydown', function (e) {
     if (e.metaKey || e.ctrlKey || e.altKey) return;
+    if (/^(INPUT|TEXTAREA)$/.test((e.target || {}).tagName || '')) return;
     var k = e.key;
     if (k === 'Escape') { if (body.classList.contains('present')) present(false); else if (sel) select(null); return; }
     if (k === 'ArrowRight') { step(1); e.preventDefault(); } else if (k === 'ArrowLeft') { step(-1); e.preventDefault(); }
@@ -751,6 +759,28 @@ body.present .pbar { display: flex; }
   });
   window.addEventListener('resize', function () { miniBuild(); miniUpdate(); if (sel) select(sel, { fly: true, nohash: true }); });
   window.addEventListener('hashchange', function () { var id = location.hash.slice(1); if (BY[id] && id !== sel) select(id, { fly: true, nohash: true }); });
+
+
+  /* ---------- Contact ---------- */
+  (function () {
+    var TO = 'rohit.socialenza@gmail.com', st = $('#cStat');
+    function say(t) { st.textContent = t; }
+    $('#cCopy').addEventListener('click', function () {
+      function ok() { say('Address copied: ' + TO); } function no() { say('Copy failed. Write to ' + TO); }
+      try { if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(TO).then(ok, no); else no(); } catch (e) { no(); }
+    });
+    $('#cForm').addEventListener('submit', function (e) {
+      e.preventDefault();
+      var n = $('#cName').value.trim(), m = $('#cEmail').value.trim(), g = $('#cMsg').value.trim();
+      if (!g) { say('Write a short message first.'); $('#cMsg').focus(); return; }
+      if (m && !/^\S+@\S+\.\S+$/.test(m)) { say('That email address looks off.'); $('#cEmail').focus(); return; }
+      var sub = 'Portfolio enquiry' + (n ? ' from ' + n : '');
+      var bodyT = g + '\n\n' + (n ? n : '') + (m ? '\n' + m : '');
+      var href = 'mailto:' + TO + '?subject=' + encodeURIComponent(sub) + '&body=' + encodeURIComponent(bodyT);
+      var a = document.createElement('a'); a.href = href; a.target = '_top'; document.body.appendChild(a); a.click(); a.remove();
+      say('Email app opened. If nothing happened, copy the address and write to ' + TO);
+    });
+  })();
 
   /* clock */
   function tick() { try { $('#hClock').textContent = 'Toronto ' + new Intl.DateTimeFormat('en-CA', { hour: 'numeric', minute: '2-digit', timeZone: 'America/Toronto' }).format(new Date()); } catch (e) { $('#hClock').textContent = 'Toronto'; } }
@@ -772,5 +802,4 @@ body.present .pbar { display: flex; }
 })();
 </script>
 
-</body>
-</html>
+</body></html>
